@@ -3,6 +3,8 @@ server:
 spring:
   application:
     name: pos-gateway
+  main:
+    web-application-type: reactive
   cloud:
     gateway:
       routes:
@@ -24,12 +26,7 @@ spring:
             - Path=/order/**
           filters:
             - StripPrefix=1
-        - id: pos-delivery
-          uri: lb://pos-delivery
-          predicates:
-            - Path=/delivery/**
-          filters:
-            - StripPrefix=1
+
 
 eureka:
   client:

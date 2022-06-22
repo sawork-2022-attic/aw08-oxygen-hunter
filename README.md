@@ -1,12 +1,9 @@
-# aw07
+# aw08
 
-Please extend your MicroPOS system by adding a delivery service shown as the following figure.
+将 aw07 复用一下，delivery 服务从由 eureka+gateway 访问，变为由 gateway 通过 channel 访问
 
-![](10-pos.svg)
+![](Micropos.svg)
 
-When an order is placed by a user, the order serivce sends out an event into some AMQP MOM (such as RabbitMQ). The delivery service will be notified and a new delivery entry will be generated automatically. User can query the delivery status for his orders.
-
-Use [Spring Cloud Stream](https://spring.io/projects/spring-cloud-stream) to make the scenerio happen. Of coz you can refer to the [demo](https://github.com/sa-spring/stream-loan) for technical details.
 
 ## pos-discovery
 
@@ -89,7 +86,7 @@ POST http://localhost:8084/api/carts/1/checkout
 port:8085
 
 总价计算器
-- 接收 pos-carts 的 getToal(CartDto) ，计算总价并返回
+- 接收 pos-carts 的 getTotal(CartDto) ，计算总价并返回
 
 ## pos-orders
 
