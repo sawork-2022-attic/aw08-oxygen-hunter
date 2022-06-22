@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: pos-orders
+  h2:
+    console.enabled: true
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+  cloud:
+    function:
+      definition: sendOrder
+    stream:
+      function:
+        bindings:
+          supplyOrder-out-0: order-send
+      bindings:
+        order-send:
+          destination: order-channel
+
+server:
+  port: 8086
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${random.uuid}
