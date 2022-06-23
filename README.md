@@ -1,9 +1,32 @@
 # aw08
 
-将 aw07 复用一下，delivery 服务从由 eureka+gateway 访问，变为由 gateway 通过 channel 访问
+aw08 将 aw07 复用，作如下修改
+- delivery 脱离了 eureka 的组网，作为单独服务运行。
+- delivery 服务从由 eureka+gateway 访问，变为由 gateway 通过 IntegrationFlow 访问。
+
+好处：
+- delivery 服务脱离了 eureka，和 micropos 的耦合程度降低。
+- 将 delivery 通过 spring integration 集成到 micropos，不需要侵入式修改 delivery 的代码，只需要加一个 gateway 的转发层，很方便。
 
 ![](Micropos.svg)
 
+
+## 使用说明
+
+先启动 `start-server.sh` 开启容器中的 rabbitmq，
+
+然后依次启动 
+- pos-discovery
+- pos-carts
+- pos-products
+- pos-counter
+- pos-orders
+- pos-delivery
+- pos-gateway
+
+按添加购物车、添加商品、结算、查订单、查物流状态的顺序使用系统，
+
+完毕后用 `stop-server.sh` 关闭 rabbitmq。
 
 ## pos-discovery
 
@@ -19,14 +42,14 @@ api 的 gateway，为以下服务提供转发
 - pos-carts
 - pos-products
 - pos-orders
-- pos-delivery 
+- pos-delivery
 
 ```
 usage:
 GET http://localhost:8080/cart/api/carts
 GET http://localhost:8080/product/api/products
 GET http://localhost:8080/order/api/orders
-GET http://localhost:8080/delivery/api/delivery
+GET http://localhost:8080/delivery
 ```
 
 ## pos-products

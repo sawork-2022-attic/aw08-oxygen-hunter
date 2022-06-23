@@ -34,8 +34,8 @@ public class GatewayApplication {
     @Bean
     public IntegrationFlow inGate() {
         logger.info("inGate");
-        return IntegrationFlows.from(Http.inboundGateway("/delivery"))
-                //.headerFilter("accept-encoding", false)
+        return IntegrationFlows.from(WebFlux.inboundGateway("/delivery"))
+                .headerFilter("accept-encoding", false)
                 .channel("deliveryChannel")
                 .get();
     }
@@ -43,24 +43,24 @@ public class GatewayApplication {
     @Bean
     public IntegrationFlow outGate() {
         logger.info("outGate");
-//        return IntegrationFlows.from("deliveryChannel")
-//                .handle(Http.outboundGateway("http://localhost:8087/api/delivery")
-//                        .httpMethod(HttpMethod.GET)
-//                        .expectedResponseType(List.class))
-//                .get();
         return IntegrationFlows.from("deliveryChannel")
-                .handle(Http.outboundGateway("https://api.chucknorris.io/jokes/random")
+                .handle(Http.outboundGateway("http://localhost:8087/api/delivery")
                         .httpMethod(HttpMethod.GET)
-                        .expectedResponseType(Joke.class))
+                        .expectedResponseType(List.class))
                 .get();
+//        return IntegrationFlows.from("deliveryChannel")
+//                .handle(Http.outboundGateway("https://api.chucknorris.io/jokes/random")
+//                        .httpMethod(HttpMethod.GET)
+//                        .expectedResponseType(Joke.class))
+//                .get();
     }
 
 
-    public class Joke {
-        private String icon_url;
-        private String id;
-        private String url;
-        private String value;
-    }
+//    public class Joke {
+//        private String icon_url;
+//        private String id;
+//        private String url;
+//        private String value;
+//    }
 
 }
